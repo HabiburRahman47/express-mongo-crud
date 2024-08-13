@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Todo = require('./model/Todo');
+const connectDB = require('./config/db');
 const app = express();
 const port = 3000;
 
@@ -74,9 +75,7 @@ app.delete('/api/deleteTodo/:id', async (req, res) => {
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://habib160947:IvvlsHC7u2hau01N@backenddb.bjlri.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB')
-.then(()=>{
-    console.log('Connected to MongoDB');
+connectDB().then(()=>{
     app.listen(port, () => {
         console.log('listening on port 3000');
     });
