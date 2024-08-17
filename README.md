@@ -1,5 +1,5 @@
 # To-Do App 
-A RESTful API  for a Todo application built with Express.js and MongoDB.
+A simple full-stack Todo list application built with Express.js, MongodB and basic HTML/CSS and JavaScript
 
 ## Features
 
@@ -7,16 +7,38 @@ A RESTful API  for a Todo application built with Express.js and MongoDB.
 - Read existing todo items
 - Update todo items
 - Delete todo items
+- Responsive UI with basic styling
+
+## Project structure
+
+simple-crude-app
+|
+├── config
+│   └── db.js              # MongoDB connection setup
+├── controllers
+│   └── todoController.js   # Logic for handling API requests
+├── models
+│   └── Todo.js             # Mongoose schema/model for Todo items
+├── public
+│   ├── index.html          # Frontend HTML file
+│   └── styles.css          # Basic CSS styling
+├── routes
+│   └── todoRoutes.js       # API routes for CRUD operations
+├── app.js     
+├── server.js               # Entry point of the application
+└── README.md               # Documentation file
+
 
 ## Prerequisites
 
 - Node.js
 - MongoDB
+- Git
 
 ## Installation
 
 1. Clone the repository
-git clone 
+git clone https://github.com/HabiburRahman47/express-mongo-crud.git 
 
 2. Install dependencies
 cd folder
@@ -44,3 +66,16 @@ Content-Type: application/json
     "status": "WIP",
     "completed" "30%"
 }
+
+## Technologies Used
+- Backend
+    - NodeJS
+    - ExpressJs
+    - MongoDB
+    - Mongoose
+- Frontend
+    - HTML
+    - CSS
+    - JavaScript(Vanilla)
+- Version Control
+    - Git
