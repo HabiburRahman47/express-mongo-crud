@@ -11,6 +11,7 @@ A simple full-stack Todo list application built with Express.js, MongodB and bas
 
 ## Project structure
 
+```
 simple-crude-app
 |
 ├── config
@@ -27,7 +28,7 @@ simple-crude-app
 ├── app.js     
 ├── server.js               # Entry point of the application
 └── README.md               # Documentation file
-
+```
 
 ## Prerequisites
 
