@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form id="todoForm">
+            <input type="hidden" id="todoId">
+            <input type="text" id="todoTitle" placeholder="Todo title" required>
+            <input type="text" id="todoStatus" placeholder="Todo status" required>
+            <input type="text" id="todoCompleted" placeholder="Todo completed">
+            <button type="submit">Add Todo</button>
+        </form>
+        <ul id="todoList"></ul>
+    </div>
+    <script>
+        const todoForm = document.getElementById('todoForm');
+        const todoId = document.getElementById('todoId');
+        const todoTitle = document.getElementById('todoTitle');
+        const todoStatus = document.getElementById('todoStatus');
+        const todoCompleted = document.getElementById('todoCompleted');
+        const todoList = document.getElementById('todoList');
+
+        // Fetch todos
+        const fetchTodos = async () => {
+            const res = await fetch('/api/todos');
+            const todos = await res.json();
+            todoList.innerHTML = todos.map(todo => `
+                <li>
+                    <span>${todo.title} - ${todo.status} - ${todo.completed}</span>
+                    <button onclick="editTodo('${todo._id}', '${todo.title}', '${todo.status}', '${todo.completed}')">Edit</button>
+                    <button onclick="deleteTodo('${todo._id}')" id="delete">Delete</button>
+                </li>
+            `).join('');
+        };
+
+        // Add or update todo
+        todoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = todoId.value;
+            const title = todoTitle.value;
+            const status = todoStatus.value;
+            const completed = todoCompleted.value;
+
+            if (id) {
+                // Update existing todo
+                const response = await fetch(`/api/todos/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, status, completed })
+                });
+                if (response.ok) {
+                    // Reset the form and button text
+                    todoId.value = '';
+                    todoTitle.value = '';
+                    todoStatus.value = '';
+                    todoCompleted.value = '';
+
+                    document.querySelector('button[type="submit"]').textContent = 'Add Todo';
+                }
+            } else {
+                // Add new todo
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, status, completed })
+                });
+                if (response.ok) {
+                    todoTitle.value = '';
+                    todoStatus.value = '';
+                    todoCompleted.value = '';
+                }
+            }
+
+            fetchTodos(); // Refresh the list of todos
+        });
+
+        // Edit todo
+        window.editTodo = (id, title, status, completed) => {
+            todoId.value = id;
+            todoTitle.value = title;
+            todoStatus.value = status;
+            todoCompleted.value = completed;
+            document.querySelector('button[type="submit"]').textContent = 'Update Todo';
+        };
+
+        // Delete todo
+        window.deleteTodo = async (id) => {
+            await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+            fetchTodos();
+        };
+
+        fetchTodos();
+    </script>
+</body>
+</html>

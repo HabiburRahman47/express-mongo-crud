@@ -26,6 +26,7 @@ const getTodo = async (req, res) => {
 const addTodo = async (req, res) => {
     try{
         const todo = await Todo.create(req.body);
+        console.log(todo);
         res.status(201).json(todo);
     }catch(err){
         console.log(err.messsage);
